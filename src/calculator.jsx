@@ -1,17 +1,24 @@
-import "./bootstrap.css";
+import './main.css'
 import {useState} from "react";
-
+import {Sun} from "lucide-react";
 function Calculator() {
   const [value, setValue] = useState('')
   const [result, setResult] = useState("")
 
-  const operations = ['/', '*', '+', '-', '.']
+  const [isDarkMode, setIsDarkMode] = useState(true)
+
+  const operations = ['/', '*', '+', '-', '.', 'Math.pow']
+
   const updateValue = valueToAdd => {
-    if (operations.includes(valueToAdd) && value === '' ||
+   
+   
+    if (operations.includes(valueToAdd) && value === '' || 
     operations.includes(valueToAdd) && operations.includes(value.slice(-1))){
       return;
     }
-    if(!operations.includes(valueToAdd)){
+
+    if (!operations.includes(valueToAdd)) {
+      
       setResult(eval(value + valueToAdd).toString())
     }
     setValue(value + valueToAdd)
@@ -34,58 +41,204 @@ function Calculator() {
   }
   const clearScreen = () =>{
     setValue('')
+    setResult('')
   }
+
+  const calculateSquareRoot = () => {
+    if(value === ''){
+      return;
+    }
+    setValue(Math.sqrt(value).toString())
+  }
+ 
+  const calculatePower = () => {
+    if(value === ''){
+      return;
+    }
+   
+    setValue(Math.pow(value, 2).toString())
+  }
+
+
   return (
-    <div className="container">
-      <div className="row flex justify-content-center align-items-center mt-5">
-        <div className="col-sm-8 col-md-5">
-          <h1 className='text-center text-info'>Calculator App</h1>
-          <div className="border border-info rounded p-3 justify-content-center align-items-center w-100 shadow mt-5">
-            <div className="bg-light border border-secondary p-2 text-secondary rounded d-flex justify-content-between fs-2 overflow-hidden">
-              <span className='' style={{
+    <div
+      className={`absolute top-0 w-screen h-screen justify-center items-center ${
+        isDarkMode ? "bg-[#333333] text-white" : ""
+      }`}
+    >
+      <div
+        className={`max-w-[400px] border mx-auto mt-20 p-5 ${
+          isDarkMode ? "bg-[#2e31ca41]" : "text-[#00010f41]"
+        }`}
+      >
+        <div className="flex w-full justify-between items-center">
+          <h1 className="text-center text-2xl font-bold">Calculator</h1>
+          <button
+            onClick={() => setIsDarkMode(!isDarkMode)}
+            className={`flex border w-[80px] px-2 py-1 rounded items-center ${
+              isDarkMode ? "justify-start" : "justify-end text-[#a0ada3]"
+            }`}
+          >
+            {isDarkMode ? (
+              <Sun size={20} className="self-end" />
+            ) : (
+              <Sun size={20} className="" />
+            )}
+          </button>
+        </div>
+        <div className="">
+          <div
+            className={`flex border justify-between items-center py-5 my-2 px-5 ${
+              isDarkMode ? "text-white" : "text-[#232323]"
+            }`}
+          >
+            <span
+              className=""
+              style={{
                 fontWeight: 300,
                 fontSize: 18,
-              }}>
-               Ans: ({result})
-              </span>
+              }}
+            >
+              {result && <p>Ans: ({result})</p>}
+            </span>
 
-              <span>
-                {value || '0'}
-              </span>
+            <span>{value || "0"}</span>
+          </div>
+
+          <div className="grid grid-cols-4 mb-2 gap-1 text-white font-semibold">
+            <button
+              className="bg-[#596] bg-opacity-80 rounded "
+              onClick={() => updateValue("+")}
+            >
+              +
+            </button>
+            <button
+              className="bg-[#596] bg-opacity-80 rounded"
+              onClick={() => updateValue("-")}
+            >
+              -
+            </button>
+
+            <button
+              className="bg-[#596] bg-opacity-80 rounded"
+              onClick={() => updateValue("*")}
+            >
+              x
+            </button>
+            <button
+              className="bg-[#596] bg-opacity-80 rounded"
+              onClick={() => updateValue("/")}
+            >
+              /
+            </button>
+            <button
+              className="bg-[#596] bg-opacity-80 rounded"
+              onClick={() => calculateSquareRoot()}
+            >
+              SQRT
+            </button>
+            <button
+              className="bg-[#596] bg-opacity-80 rounded"
+              onClick={() => calculatePower()}
+            >
+              ^2
+            </button>
+            <button
+              className="bg-[#596] bg-opacity-80 rounded"
+              onClick={() => deleteLastInputDigit()}
+            >
+              DEL
+            </button>
+            <button
+              className="bg-[#596] bg-opacity-80 rounded"
+              onClick={() => clearScreen()}
+            >
+              CLR
+            </button>
+          </div>
+          <div className="text-white">
+            <div className="grid grid-cols-3 gap-1 mb-1">
+              <button
+                className="bg-[#596] bg-opacity-80 rounded"
+                onClick={() => updateValue("1")}
+              >
+                1
+              </button>
+              <button
+                className="bg-[#596] bg-opacity-80 rounded"
+                onClick={() => updateValue("2")}
+              >
+                2
+              </button>
+              <button
+                className="bg-[#596] bg-opacity-80 rounded"
+                onClick={() => updateValue("3")}
+              >
+                3
+              </button>
             </div>
-
-            <div className=" row-cols-6 mt-2">
-              <button className="btn btn-success rounded-0 border " onClick={()=> updateValue('+')}>+</button>
-              <button className="btn btn-success rounded-0 border" onClick={()=> updateValue('-')}>-</button>
-
-              <button className="btn btn-success rounded-0 border" onClick={()=> updateValue('*')}>x</button>
-              <button className="btn btn-success rounded-0 border" onClick={()=> updateValue('/')}>/</button>
-              <button className="btn btn-success rounded-0 border" onClick={()=>deleteLastInputDigit()}>DEL</button>
-              <button className="btn btn-success rounded-0 border" onClick={()=> clearScreen()}>CLR</button>
+            <div className="grid grid-cols-3 gap-1 mb-1 text-white">
+              <button
+                className="bg-[#596] bg-opacity-80 rounded"
+                onClick={() => updateValue("4")}
+              >
+                4
+              </button>
+              <button
+                className="bg-[#596] bg-opacity-80 rounded"
+                onClick={() => updateValue("5")}
+              >
+                5
+              </button>
+              <button
+                className="bg-[#596] bg-opacity-80 rounded"
+                onClick={() => updateValue("6")}
+              >
+                6
+              </button>
+            </div>{" "}
+            <div className="grid grid-cols-3 gap-1 mb-1">
+              <button
+                className="bg-[#596] bg-opacity-80 rounded"
+                onClick={() => updateValue("7")}
+              >
+                7
+              </button>
+              <button
+                className="bg-[#596] bg-opacity-80 rounded"
+                onClick={() => updateValue("8")}
+              >
+                8
+              </button>
+              <button
+                className="bg-[#596] bg-opacity-80 rounded"
+                onClick={() => updateValue("9")}
+              >
+                9
+              </button>
             </div>
-             <div className="row mt-2">
-              <div className="flex row-cols-3">
-                <button className='btn btn-secondary rounded-0 border' onClick={()=> updateValue('1')}>1</button>
-                <button className='btn btn-secondary rounded-0 border' onClick={()=> updateValue('2')}>2</button>
-                <button className='btn btn-secondary rounded-0 border' onClick={()=> updateValue('3')}>3</button>
-              </div>
-                <div className="flex row-cols-3">
-                <button className='btn btn-secondary rounded-0 border' onClick={()=> updateValue('4')}>4</button>
-                <button className='btn btn-secondary rounded-0 border' onClick={()=> updateValue('5')}>5</button>
-                <button className='btn btn-secondary rounded-0 border' onClick={()=> updateValue('6')}>6</button>
-              </div>   <div className="row-cols-3">
-                <button className='btn btn-secondary rounded-0 border' onClick={()=> updateValue('7')}>7</button>
-                <button className='btn btn-secondary rounded-0 border' onClick={()=> updateValue('8')}>8</button>
-                <button className='btn btn-secondary rounded-0 border' onClick={()=> updateValue('9')}>9</button>
-              </div>
-            </div>
+          </div>
 
-            <div className="row-cols-3">
-              <button className="btn btn-secondary rounded-0 border" onClick={()=> updateValue('0')}>0</button>
-              <button className="btn btn-secondary rounded-0 border" onClick={()=> updateValue('.')}>.</button>
+          <div className="grid grid-cols-3 gap-1 text-white">
+            <button
+              className="bg-[#596] bg-opacity-80 rounded"
+              onClick={() => updateValue("0")}
+            >
+              0
+            </button>
+            <button
+              className="bg-[#596] bg-opacity-80 rounded"
+              onClick={() => updateValue(".")}
+            >
+              .
+            </button>
 
-              <button className="btn btn-secondary rounded-0 border" onClick={()=> calculateFinal()}>=</button>
-            </div>
+            <button
+              className="bg-[#596] bg-opacity-80 rounded"
+              onClick={() => calculateFinal()}
+            >
+              =
+            </button>
           </div>
         </div>
       </div>
