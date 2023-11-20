@@ -67,8 +67,8 @@ function Calculator() {
       }`}
     >
       <div
-        className={`max-w-[400px] border mx-auto mt-20 p-5 ${
-          isDarkMode ? "bg-[#2e31ca41]" : "text-[#00010f41]"
+        className={`max-w-[400px] rounded border mx-auto mt-20 p-5 ${
+          isDarkMode ? "bg-[#2e31ca41]" : "text-[#00010f41] "
         }`}
       >
         <div className="flex w-full justify-between items-center">
